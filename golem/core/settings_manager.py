@@ -98,7 +98,7 @@ DEFAULTS = [
     ('log_all_events', True),
     ('start_maximized', True),
     ('screenshots', {}),
-    ('chrome_options', []')
+    ('chrome_options', [])
 ]
 
 
