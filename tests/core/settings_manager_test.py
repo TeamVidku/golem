@@ -24,7 +24,8 @@ DEFAULT_EMPTY = {
     'console_log_level': 'INFO',
     'log_all_events': True,
     'start_maximized': True,
-    'screenshots': {}
+    'screenshots': {},
+    'chrome_options': []
 }
 
 DEFAULT_PREDEFINED = {
@@ -48,7 +49,8 @@ DEFAULT_PREDEFINED = {
     'test_data': 'csv',
     'wait_hook': None,
     'start_maximized': True,
-    'screenshots': {}
+    'screenshots': {},
+    'chrome_options': []
 }
 
 
@@ -124,7 +126,8 @@ class TestAssignSettingsDefaultValues:
             'console_log_level': None,
             'log_all_events': None,
             'start_maximized': None,
-            'screenshots': None
+            'screenshots': None,
+            'chrome_options': []
         }
         normalized = settings_manager.assign_settings_default_values(input_settings)
         assert normalized == DEFAULT_EMPTY
@@ -149,7 +152,8 @@ class TestAssignSettingsDefaultValues:
             'console_log_level': '',
             'log_all_events': '',
             'start_maximized': '',
-            'screenshots': ''
+            'screenshots': '',
+            'chrome_options': []
         }
         normalized = settings_manager.assign_settings_default_values(input_settings)
         assert normalized == DEFAULT_EMPTY

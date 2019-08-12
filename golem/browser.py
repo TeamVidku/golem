@@ -97,6 +97,8 @@ def open_browser(browser_id=None):
     elif browser_definition['name'] == 'chrome':
         with validate_exec_path('chrome', 'chromedriver_path', settings) as ex_path:
             chrome_options = webdriver.ChromeOptions()
+            for i in range(len(settings['chrome_options'])):
+                chrome_options.add_argument(settings['chrome_options'][i])
             if settings['start_maximized']:
                 chrome_options.add_argument('start-maximized')
             driver = GolemChromeDriver(executable_path=ex_path,
@@ -105,6 +107,8 @@ def open_browser(browser_id=None):
     elif browser_definition['name'] == 'chrome-headless':
         with validate_exec_path('chrome', 'chromedriver_path', settings) as ex_path:
             chrome_options = webdriver.ChromeOptions()
+            for i in range(len(settings['chrome_options'])):
+                chrome_options.add_argument(settings['chrome_options'][i])
             chrome_options.add_argument('headless')
             chrome_options.add_argument('--window-size=1600,1600')
             driver = GolemChromeDriver(executable_path=ex_path,

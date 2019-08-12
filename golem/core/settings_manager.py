@@ -64,6 +64,9 @@ SETTINGS_FILE_CONTENT = (
 
 // Log all events, instead of just Golem events. Default is true
 "log_all_events": true
+
+// Additional Chrome Options.  Pass additional Chrome options into Chromedriver.
+"chrome_options": ["--use-fake-ui-for-media-stream"]
 }
 """)
 
@@ -94,7 +97,8 @@ DEFAULTS = [
     ('console_log_level', 'INFO'),
     ('log_all_events', True),
     ('start_maximized', True),
-    ('screenshots', {})
+    ('screenshots', {}),
+    ('chrome_options', []')
 ]
 
 
