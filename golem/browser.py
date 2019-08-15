@@ -100,6 +100,7 @@ def open_browser(browser_id=None):
     elif browser_definition['name'] == 'chrome':
         with validate_exec_path('chrome', 'chromedriver_path', settings) as ex_path:
             chrome_options = webdriver.ChromeOptions()
+            print(settings['additional_browser_options'])
             for i in range(len(settings['additional_browser_options'])):
                 chrome_options.add_argument(
                     settings['additional_browser_options'][i])
@@ -192,8 +193,8 @@ def open_browser(browser_id=None):
         with validate_exec_path('opera', 'operadriver_path', settings) as ex_path:
             opera_options = webdriver.ChromeOptions()
             for i in range(len(settings['additional_browser_options'])):
-                    opera_options.add_argument(
-                        settings['additional_browser_options'][i])
+                opera_options.add_argument(
+                    settings['additional_browser_options'][i])
             if 'opera_binary_path' in settings:
                 opera_options.binary_location = settings['opera_binary_path']
             driver = GolemOperaDriver(
