@@ -146,6 +146,6 @@ Log all events or just Golem events. Default is true.
 
 Start the browser maximized. Default is true.
 
-### chrome_options
+### additional_browser_options
 
-Add additional Chrome start up options. i.e. "--use-fake-ui-for-media-stream"
+Add additional browser options at start up. i.e. "--use-fake-ui-for-media-stream"

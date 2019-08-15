@@ -6,7 +6,7 @@ from golem.core import session
 
 
 SETTINGS_FILE_CONTENT = (
-"""{
+    """{
 // Default timeout in seconds to wait until an element is present
 "search_timeout": 20,
 
@@ -65,13 +65,13 @@ SETTINGS_FILE_CONTENT = (
 // Log all events, instead of just Golem events. Default is true
 "log_all_events": true
 
-// Additional Chrome Options.  Pass additional Chrome options into Chromedriver.
-"chrome_options": ["--use-fake-ui-for-media-stream"]
+// Additional Browser Options.  Pass additional browser options into webdriver.
+"additional_browser_options": ["--use-fake-ui-for-media-stream"]
 }
 """)
 
 REDUCED_SETTINGS_FILE_CONTENT = (
-"""// Settings defined here will override global settings
+    """// Settings defined here will override global settings
 {
 }
 """)
@@ -98,7 +98,7 @@ DEFAULTS = [
     ('log_all_events', True),
     ('start_maximized', True),
     ('screenshots', {}),
-    ('chrome_options', [])
+    ('additional_browser_options', [])
 ]
 
 
@@ -140,7 +140,7 @@ def _read_json_with_comments(json_path):
 def assign_settings_default_values(settings):
     """Verify that each setting value is present at least with
     the default value
-    """ 
+    """
     for default in DEFAULTS:
         if not default[0] in settings:
             settings[default[0]] = default[1]

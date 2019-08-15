@@ -47,7 +47,8 @@ def open_browser(browser_id=None):
     def validate_exec_path(browser_name, exec_path_setting, settings):
         executable_path = settings[exec_path_setting]
         if executable_path:
-            matched_executable_path = utils.match_latest_executable_path(executable_path)
+            matched_executable_path = utils.match_latest_executable_path(
+                executable_path)
             if matched_executable_path:
                 try:
                     yield matched_executable_path
@@ -59,7 +60,8 @@ def open_browser(browser_id=None):
                     execution.logger.info(traceback.format_exc())
                     raise Exception(msg)
             else:
-                msg = 'No executable file found using path {}'.format(executable_path)
+                msg = 'No executable file found using path {}'.format(
+                    executable_path)
                 execution.logger.error(msg)
                 raise Exception(msg)
         else:
@@ -84,7 +86,8 @@ def open_browser(browser_id=None):
         else:
             browser_id = 'browser{}'.format(len(execution.browsers))
     if browser_id in execution.browsers:
-        raise InvalidBrowserIdError("browser id '{}' is already in use".format(browser_id))
+        raise InvalidBrowserIdError(
+            "browser id '{}' is already in use".format(browser_id))
 
     browser_definition = execution.browser_definition
     settings = execution.settings
@@ -97,8 +100,9 @@ def open_browser(browser_id=None):
     elif browser_definition['name'] == 'chrome':
         with validate_exec_path('chrome', 'chromedriver_path', settings) as ex_path:
             chrome_options = webdriver.ChromeOptions()
-            for i in range(len(settings['chrome_options'])):
-                chrome_options.add_argument(settings['chrome_options'][i])
+            for i in range(len(settings['additional_browser_options'])):
+                chrome_options.add_argument(
+                    settings['additional_browser_options'][i])
             if settings['start_maximized']:
                 chrome_options.add_argument('start-maximized')
             driver = GolemChromeDriver(executable_path=ex_path,
@@ -107,8 +111,9 @@ def open_browser(browser_id=None):
     elif browser_definition['name'] == 'chrome-headless':
         with validate_exec_path('chrome', 'chromedriver_path', settings) as ex_path:
             chrome_options = webdriver.ChromeOptions()
-            for i in range(len(settings['chrome_options'])):
-                chrome_options.add_argument(settings['chrome_options'][i])
+            for i in range(len(settings['additional_browser_options'])):
+                chrome_options.add_argument(
+                    settings['additional_browser_options'][i])
             chrome_options.add_argument('headless')
             chrome_options.add_argument('--window-size=1600,1600')
             driver = GolemChromeDriver(executable_path=ex_path,
@@ -122,6 +127,9 @@ def open_browser(browser_id=None):
     elif browser_definition['name'] == 'chrome-remote-headless':
         with validate_remote_url(settings['remote_url']) as remote_url:
             chrome_options = webdriver.ChromeOptions()
+            for i in range(len(settings['additional_browser_options'])):
+                chrome_options.add_argument(
+                    settings['additional_browser_options'][i])
             chrome_options.add_argument('headless')
             desired_capabilities = chrome_options.to_capabilities()
             driver = GolemRemoteDriver(command_executor=remote_url,
@@ -138,13 +146,22 @@ def open_browser(browser_id=None):
     # Firefox
     elif browser_definition['name'] == 'firefox':
         with validate_exec_path('firefox', 'geckodriver_path', settings) as ex_path:
-            driver = GolemGeckoDriver(executable_path=ex_path)
+            firefox_options = webdriver.FirefoxOptions()
+            for i in range(len(settings['additional_browser_options'])):
+                firefox_options.add_argument(
+                    settings['additional_browser_options'][i])
+            driver = GolemGeckoDriver(
+                executable_path=ex_path, firefox_options=firefox_options)
     # Firefox headless
     elif browser_definition['name'] == 'firefox-headless':
         with validate_exec_path('firefox', 'geckodriver_path', settings) as ex_path:
             firefox_options = webdriver.FirefoxOptions()
+            for i in range(len(settings['additional_browser_options'])):
+                firefox_options.add_argument(
+                    settings['additional_browser_options'][i])
             firefox_options.headless = True
-            driver = GolemGeckoDriver(executable_path=ex_path, firefox_options=firefox_options)
+            driver = GolemGeckoDriver(
+                executable_path=ex_path, firefox_options=firefox_options)
     # Firefox remote
     elif browser_definition['name'] == 'firefox-remote':
         with validate_remote_url(settings['remote_url']) as remote_url:
@@ -154,6 +171,9 @@ def open_browser(browser_id=None):
     elif browser_definition['name'] == 'firefox-remote-headless':
         with validate_remote_url(settings['remote_url']) as remote_url:
             firefox_options = webdriver.FirefoxOptions()
+            for i in range(len(settings['additional_browser_options'])):
+                firefox_options.add_argument(
+                    settings['additional_browser_options'][i])
             firefox_options.headless = True
             desired_capabilities = firefox_options.to_capabilities()
             driver = GolemRemoteDriver(command_executor=remote_url,
@@ -171,16 +191,21 @@ def open_browser(browser_id=None):
     elif browser_definition['name'] == 'opera':
         with validate_exec_path('opera', 'operadriver_path', settings) as ex_path:
             opera_options = webdriver.ChromeOptions()
+            for i in range(len(settings['additional_browser_options'])):
+                    opera_options.add_argument(
+                        settings['additional_browser_options'][i])
             if 'opera_binary_path' in settings:
                 opera_options.binary_location = settings['opera_binary_path']
-            driver = GolemOperaDriver(executable_path=ex_path, options=opera_options)
+            driver = GolemOperaDriver(
+                executable_path=ex_path, options=opera_options)
     # Opera remote
     elif browser_definition['name'] == 'opera-remote':
         with validate_remote_url(settings['remote_url']) as remote_url:
             driver = GolemRemoteDriver(command_executor=remote_url,
                                        desired_capabilities=DesiredCapabilities.OPERA)
     else:
-        raise Exception('Error: {} is not a valid driver'.format(browser_definition['name']))
+        raise Exception('Error: {} is not a valid driver'.format(
+            browser_definition['name']))
 
     if settings['start_maximized']:
         # currently there is no way to maximize chrome window on OSX (chromedriver 2.43), adding workaround

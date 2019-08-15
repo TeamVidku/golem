@@ -25,7 +25,7 @@ DEFAULT_EMPTY = {
     'log_all_events': True,
     'start_maximized': True,
     'screenshots': {},
-    'chrome_options': []
+    'additional_browser_options': []
 }
 
 DEFAULT_PREDEFINED = {
@@ -50,7 +50,7 @@ DEFAULT_PREDEFINED = {
     'wait_hook': None,
     'start_maximized': True,
     'screenshots': {},
-    'chrome_options': []
+    'additional_browser_options': []
 }
 
 
@@ -64,7 +64,7 @@ class TestCreateGlobalSettingsFile:
         with open(settings_path) as settings_file:
             actual = settings_file.read()
             assert actual == settings_manager.SETTINGS_FILE_CONTENT
-    
+
 
 class TestCreateProjectSettingsFile:
 
@@ -127,9 +127,10 @@ class TestAssignSettingsDefaultValues:
             'log_all_events': None,
             'start_maximized': None,
             'screenshots': None,
-            'chrome_options': []
+            'additional_browser_options': []
         }
-        normalized = settings_manager.assign_settings_default_values(input_settings)
+        normalized = settings_manager.assign_settings_default_values(
+            input_settings)
         assert normalized == DEFAULT_EMPTY
 
     def test_assign_settings_default_values_all_empty_str(self):
@@ -153,9 +154,10 @@ class TestAssignSettingsDefaultValues:
             'log_all_events': '',
             'start_maximized': '',
             'screenshots': '',
-            'chrome_options': []
+            'additional_browser_options': []
         }
-        normalized = settings_manager.assign_settings_default_values(input_settings)
+        normalized = settings_manager.assign_settings_default_values(
+            input_settings)
         assert normalized == DEFAULT_EMPTY
 
 
@@ -190,7 +192,8 @@ class TestGetProjectSettingsAsString:
 
     def test_get_project_settings_as_string(self, project_session):
         _, project = project_session.activate()
-        project_settings = settings_manager.get_project_settings_as_string(project)
+        project_settings = settings_manager.get_project_settings_as_string(
+            project)
         expected = settings_manager.REDUCED_SETTINGS_FILE_CONTENT
         assert project_settings == expected
 
@@ -263,7 +266,8 @@ class TestGetRemoteBrowserList:
                 'browser02': {}
             }
         }
-        remote_browsers = settings_manager.get_remote_browser_list(input_settings)
+        remote_browsers = settings_manager.get_remote_browser_list(
+            input_settings)
         expected = ['browser01', 'browser02']
         assert sorted(remote_browsers) == sorted(expected)
 
@@ -272,7 +276,8 @@ class TestGetRemoteBrowserList:
             'another_setting': '',
             'remote_browsers': {}
         }
-        remote_browsers = settings_manager.get_remote_browser_list(input_settings)
+        remote_browsers = settings_manager.get_remote_browser_list(
+            input_settings)
         expected = []
         assert remote_browsers == expected
 
@@ -280,6 +285,7 @@ class TestGetRemoteBrowserList:
         input_settings = {
             'another_setting': ''
         }
-        remote_browsers = settings_manager.get_remote_browser_list(input_settings)
+        remote_browsers = settings_manager.get_remote_browser_list(
+            input_settings)
         expected = []
         assert remote_browsers == expected
